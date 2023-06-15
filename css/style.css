@@ -66,8 +66,8 @@ main header form button {
   border: 1px solid #ccc;
   border-radius: 0 8px 8px 0;
   cursor: pointer;
-  font-weight: 600;
   padding: 0 1.3rem;
+  background: white;
 }
 
 .favorites-btn {

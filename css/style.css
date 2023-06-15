@@ -1,0 +1,259 @@
+:root {
+  font-size: 62.5%;
+  --background-gradient: linear-gradient(30deg, #f39c12 30%, #f1c40f);
+  --gray: #34495e;
+  --bg-select: #fff;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body,
+button {
+  color: rgb(73, 73, 73);
+  font-family: "Nunito Sans", sans-serif;
+}
+
+body,
+input,
+button {
+  font-size: 1.6rem;
+}
+
+#app {
+  padding: 2rem;
+  max-width: 100vw;
+  min-height: 100vh;
+  background: #63516f;
+  text-align: center;
+}
+
+main {
+  background-color: #fff;
+  min-height: 100vh;
+  border-radius: 8px;
+}
+
+main header {
+  margin: 0 auto;
+  padding: 3rem;
+  background-color: #f9f5f3;
+  border-radius: 8px 8px 0 0;
+}
+
+.search-container {
+  margin: 0 auto;
+  max-width: 35rem;
+}
+
+main header form {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+main header form input {
+  border-radius: 8px 0 0 8px;
+  border: 1px solid #ccc;
+  height: 3.2rem;
+  padding: 1rem;
+  width: 100%;
+}
+
+main header form button {
+  border: 1px solid #ccc;
+  border-radius: 0 8px 8px 0;
+  cursor: pointer;
+  font-weight: 600;
+  padding: 0 1.3rem;
+}
+
+.favorites-btn {
+  padding: 0.7rem 2rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  display: none;
+}
+
+.favorites-container {
+  position: relative;
+  display: inline-block;
+}
+
+.favorite-list {
+  /* display: none; */
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  /* left: 0px; */
+  /* right: 0; */
+  padding: 10px;
+  background-color: #fff;
+  width: 25rem;
+  right: 0;
+  /* transition: all .5s; */
+  transition: all 0.3s ease-in-out;
+}
+
+.favorites-container:hover .favorite-list {
+  visibility: visible;
+  opacity: 1;
+}
+
+ul li {
+  list-style: none;
+  margin-top: 3rem;
+}
+
+#fixtures-container {
+  padding: 5rem 0;
+}
+
+.teams-container {
+  max-width: 40rem;
+  margin: 0 auto;
+  border-bottom: 1px solid #ccc;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.teams-title {
+  font-size: 1.3rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.teams-title span:nth-child(1),
+.teams-title span:nth-child(3) {
+  font-weight: bold;
+}
+
+.teams-title img {
+  width: 2.5rem;
+}
+
+.teams {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.teams img {
+  width: 4rem;
+}
+
+.team-1, .team-2 {
+    font-size: 1.3rem;
+}
+
+.scoreboard {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin: 0 2rem;
+}
+.scoreboard span:nth-child(1),
+.scoreboard span:nth-child(3) {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.scoreboard span:nth-child(2) {
+  font-size: 1.3rem;
+  color: #ccc;
+}
+
+.round {
+    font-size: 1.3rem;
+}
+
+@media (min-width: 700px) {
+  .search-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+  main header form {
+    margin-top: 0;
+  }
+
+  main header {
+    max-width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 3rem;
+  }
+  .search-container {
+    margin: 0;
+    max-width: 100%;
+  }
+
+  #app {
+    padding: 5rem 10rem;
+  }
+
+  .favorites-btn {
+    display: block;
+  }
+
+  .teams {
+    gap: 1rem;
+  }
+
+  .scoreboard {
+    gap: 2rem;
+  }
+}
+
+select {
+  /* Reset Select */
+  appearance: none;
+  outline: 0;
+  border: 0;
+  box-shadow: none;
+  /* Personalize */
+  flex: 1;
+  padding: 0 1em;
+  color: rgb(73, 73, 73);
+  background-color: var(--bg-select);
+  background-image: none;
+  cursor: pointer;
+}
+/* Remove IE arrow */
+select::-ms-expand {
+  display: none;
+}
+/* Custom Select wrapper */
+.select {
+    position: relative;
+    display: flex;
+    width: 14rem;
+    height: 3rem;
+    border-radius: 0.25em;
+    overflow: hidden;
+}
+/* Arrow */
+.select::after {
+    content: "\25BC";
+    position: absolute;
+    top: -8px;
+    right: 0px;
+    padding: 1em;
+    background-color: var(--bg-select);
+    transition: 0.25s all ease;
+    pointer-events: none;
+}
+/* Transition */
+.select:hover::after {
+  color: #f39c12;
+}
+
+/* Other styles*/

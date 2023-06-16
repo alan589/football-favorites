@@ -4,7 +4,8 @@ export class FootballView extends Teams {
   constructor(root) {
     super(root);
     this.onAdd();
-    this.onAddFavorite()
+    this.onAddFavorite();
+    this.displayFavorites();
   }
 
   onAdd() {
@@ -12,56 +13,57 @@ export class FootballView extends Teams {
     searchButton.onclick = (e) => {
       e.preventDefault();
       const formInput = this.root.querySelector(".search-container form input");
-      this.lastTeamSearched = formInput.value
+      this.lastTeamSearched = formInput.value;
       this.addTeam(formInput.value);
-      formInput.value = ''
+      formInput.value = "";
     };
   }
 
   onAddFavorite() {
     const favoriteBtn = this.root.querySelector(".fixtures-title svg");
     favoriteBtn.onclick = () => {
-      if(favoriteBtn.classList.contains('favorited')) this.removeFavorite(this.lastTeamSearched)
-      else this.addFavorite(this.lastTeamSearched)
+      if (favoriteBtn.classList.contains("favorited"))
+        this.removeFavorite(this.lastTeamSearched);
+      else this.addFavorite(this.lastTeamSearched);
 
-      favoriteBtn.classList.toggle('favorited')
-
+      favoriteBtn.classList.toggle("favorited");
+      this.displayFavorites();
       console.log(this.lastTeamSearched);
-    }
+    };
   }
 
   displayTeams(fixtures) {
-    this.root.querySelector(".fixtures-title").classList.remove('hidden')
-    const favoriteBtn = this.root.querySelector(".fixtures-title svg");
-    console.log('this.lastTeamSearched', this.lastTeamSearched);
-    const favorite = this.getFavoriteFromLocalstorage(this.lastTeamSearched)
-
-    console.log(favorite);
-
-    if(favorite) favoriteBtn.classList.add('favorited')
-    else favoriteBtn.classList.remove('favorited')
-
+    this.root.querySelector(".fixtures-title").classList.remove("hidden");
     fixtures.forEach((fixture) => {
       this.fixtureContainer.appendChild(this.createRound(fixture));
     });
   }
 
-  // loadFavorites(){
-  //   this.teams.forEach((team) => {
-  //     this.root.querySelector(".favorite-list ul").appendChild(this.createFavorites(team));
-  //   })
-  // }
+  displayFavorites() {
+    this.removeAllFavorites()
+    this.favorites.forEach((favorite) => {
+      this.root
+        .querySelector(".favorite-list ul")
+        .appendChild(this.createFavorites(favorite));
+    });
+  }
 
-  createFavorites(team){
+  removeAllFavorites() {
+    this.root.querySelectorAll(".favorite-list ul li").forEach((li) => {
+      li.remove();
+    });
+  }
+
+  createFavorites(team) {
     const html = `
       <img src=${team.logo} alt="${team.name} logo">
       <span>${team.code}</span>
-    `
+    `;
 
-    const li = document.createElement('li')
-    li.innerHTML = html
+    const li = document.createElement("li");
+    li.innerHTML = html;
 
-    return li
+    return li;
   }
 
   createRound(round) {
@@ -120,6 +122,15 @@ export class FootballView extends Teams {
   }
 
   removeAllRounds() {
+    this.root.querySelector(".fixtures-title").classList.add("hidden");
+    const favoriteBtn = this.root.querySelector(".fixtures-title svg");
+    console.log("this.lastTeamSearched", this.lastTeamSearched);
+    const favorite = this.getFavoriteFromLocalstorage(this.lastTeamSearched);
+
+    console.log(favorite);
+
+    if (favorite) favoriteBtn.classList.add("favorited");
+    else favoriteBtn.classList.remove("favorited");
 
     this.fixtureContainer
       .querySelectorAll(".teams-container")

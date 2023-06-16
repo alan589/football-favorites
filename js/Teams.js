@@ -29,7 +29,11 @@ export class Teams {
             this.saveTeams()
           });
         })
-        .catch((error) => console.error("error", error));
+        .catch((error) => {
+          console.error("error", error)
+          alert('Time não encontrado')
+          this.removeAllRounds()
+        });
     }
   }
 

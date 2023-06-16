@@ -4,24 +4,64 @@ export class FootballView extends Teams {
   constructor(root) {
     super(root);
     this.onAdd();
+    this.onAddFavorite()
   }
 
   onAdd() {
     const searchButton = this.root.querySelector(".search-btn");
     searchButton.onclick = (e) => {
       e.preventDefault();
-      const { value } = this.root.querySelector(".search-container form input");
-      this.add(value);
+      const formInput = this.root.querySelector(".search-container form input");
+      this.lastTeamSearched = formInput.value
+      this.addTeam(formInput.value);
+      formInput.value = ''
     };
   }
 
+  onAddFavorite() {
+    const favoriteBtn = this.root.querySelector(".fixtures-title svg");
+    favoriteBtn.onclick = () => {
+      if(favoriteBtn.classList.contains('favorited')) this.removeFavorite(this.lastTeamSearched)
+      else this.addFavorite(this.lastTeamSearched)
+
+      favoriteBtn.classList.toggle('favorited')
+
+      console.log(this.lastTeamSearched);
+    }
+  }
+
   displayTeams(fixtures) {
-    const h2 = document.createElement("h2");
-    h2.innerText = "Partidas";
-    this.fixtureContainer.appendChild(h2);
+    this.root.querySelector(".fixtures-title").classList.remove('hidden')
+    const favoriteBtn = this.root.querySelector(".fixtures-title svg");
+    console.log('this.lastTeamSearched', this.lastTeamSearched);
+    const favorite = this.getFavoriteFromLocalstorage(this.lastTeamSearched)
+
+    console.log(favorite);
+
+    if(favorite) favoriteBtn.classList.add('favorited')
+    else favoriteBtn.classList.remove('favorited')
+
     fixtures.forEach((fixture) => {
       this.fixtureContainer.appendChild(this.createRound(fixture));
     });
+  }
+
+  // loadFavorites(){
+  //   this.teams.forEach((team) => {
+  //     this.root.querySelector(".favorite-list ul").appendChild(this.createFavorites(team));
+  //   })
+  // }
+
+  createFavorites(team){
+    const html = `
+      <img src=${team.logo} alt="${team.name} logo">
+      <span>${team.code}</span>
+    `
+
+    const li = document.createElement('li')
+    li.innerHTML = html
+
+    return li
   }
 
   createRound(round) {
@@ -57,7 +97,7 @@ export class FootballView extends Teams {
               .toLocaleUpperCase()}</span>
             <img
             src=${teams.home.logo}
-            alt="logo do ${teams.home.name}"
+            alt="${teams.home.name} logo"
             />
             <div class="scoreboard">
             <span>${goals.home === null ? "&nbsp;" : goals.home}</span>
@@ -66,7 +106,7 @@ export class FootballView extends Teams {
             </div>
             <img
             src=${teams.away.logo}
-            alt="logo do ${teams.away.name}"
+            alt="${teams.away.name} logo"
             />
             <span class="team-2">${teams.away.name
               .slice(0, 3)
@@ -80,8 +120,6 @@ export class FootballView extends Teams {
   }
 
   removeAllRounds() {
-    const h2 = this.fixtureContainer.querySelector("h2");
-    if (h2) h2.remove();
 
     this.fixtureContainer
       .querySelectorAll(".teams-container")

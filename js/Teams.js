@@ -5,47 +5,72 @@ export class Teams {
     this.root = document.querySelector(root);
     this.fixtureContainer = this.root.querySelector("#fixtures-container");
     this.footballApi = new FootballApi();
-    this.load();
+    this.loadTeams();
+    this.loadFavorites()
   }
 
-  add(teamName) {
+  addTeam(teamName) {
     const team = this.getTeamFromLocalstorage(teamName);
     console.log(team);
     if (team) {
-      this.footballApi.searchTeamFixtures(team.id).then((fixtures) => {
-        console.log(fixtures);
-        this.removeAllRounds()
-        this.displayTeams(fixtures)
-      });
+      this.removeAllRounds()
+      this.displayTeams(team.fixtures)
     } else {
       this.footballApi
         .searchTeam(teamName)
         .then((team) => {
           const { logo, id, name, country, code } = team;
-          this.teams = [...this.teams, { logo, id, name, country, code }];
-          console.log('salvando...');
-          this.save();
-
+          
           this.footballApi.searchTeamFixtures(id).then((fixtures) => {
             console.log(fixtures);
             this.removeAllRounds()
             this.displayTeams(fixtures)
+            this.teams = [...this.teams, { logo, id, name, country, code, fixtures }];
+            this.saveTeams()
           });
         })
         .catch((error) => console.error("error", error));
     }
   }
 
-  load() {
+  loadTeams() {
     this.teams = JSON.parse(localStorage.getItem("@teams:")) || [];
-    console.log(this.teams);
+    console.log('teams:', this.teams);
   }
 
-  save() {
+  saveTeams() {
     localStorage.setItem("@teams:", JSON.stringify(this.teams));
   }
 
   getTeamFromLocalstorage(teamName) {
     return this.teams.find((team) => team.name.toLowerCase() === teamName.toLowerCase());
+  }
+
+  getFavoriteFromLocalstorage(favoriteName) {
+    console.log(this.favorites);
+    return this.favorites.find((favorite) => favorite.name.toLowerCase() === favoriteName.toLowerCase());
+  }
+
+  addFavorite(teamName){
+    const {code, logo, id, name} = this.getTeamFromLocalstorage(teamName)
+    this.favorites = [...this.favorites, {code, logo, id, name}]
+    this.saveFavorites()
+  }
+
+  removeFavorite(name) {
+    const {id} = this.getTeamFromLocalstorage(name)
+    const array = this.favorites.filter(favorite => favorite.id !== id);  
+    this.favorites = [...array]
+    this.saveFavorites()
+    console.log('novo favoritos:', this.favorites);
+  }
+
+  saveFavorites(){
+    localStorage.setItem("@favorites:", JSON.stringify(this.favorites));
+  }
+
+  loadFavorites() {
+    this.favorites = JSON.parse(localStorage.getItem("@favorites:")) || [];
+    console.log('favorites:', this.favorites);
   }
 }

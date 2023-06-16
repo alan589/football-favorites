@@ -173,46 +173,6 @@ ul li {
     font-size: 1.3rem;
 }
 
-@media (min-width: 700px) {
-  .search-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-  }
-  main header form {
-    margin-top: 0;
-  }
-
-  main header {
-    max-width: 100%;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    gap: 3rem;
-  }
-  .search-container {
-    margin: 0;
-    max-width: 100%;
-  }
-
-  #app {
-    padding: 5rem 10rem;
-  }
-
-  .favorites-btn {
-    display: block;
-  }
-
-  .teams {
-    gap: 1rem;
-  }
-
-  .scoreboard {
-    gap: 2rem;
-  }
-}
-
 select {
   /* Reset Select */
   appearance: none;
@@ -257,3 +217,46 @@ select::-ms-expand {
 }
 
 /* Other styles*/
+
+
+
+
+@media (min-width: 700px) {
+  .search-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+  main header form {
+    margin-top: 0;
+  }
+
+  main header {
+    max-width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 3rem;
+  }
+  .search-container {
+    margin: 0;
+    max-width: 100%;
+  }
+
+  #app {
+    padding: 5rem 10rem;
+  }
+
+  .favorites-btn {
+    display: block;
+  }
+
+  .teams {
+    gap: 1rem;
+  }
+
+  .scoreboard {
+    gap: 2rem;
+  }
+}

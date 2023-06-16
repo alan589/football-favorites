@@ -26,7 +26,6 @@ export class FootballApi {
       });
   }
   searchTeamFixtures(id) {
-    // const { from, to } = getWeekDates();
     const endpoint = `https://v3.football.api-sports.io/fixtures?
     season=2023&league=71&team=${id}&timezone=America/Sao_Paulo`;
 

@@ -3,12 +3,12 @@ import { Teams } from "./Teams.js";
 export class FootballView extends Teams {
   constructor(root) {
     super(root);
-    this.onAdd();
+    this.onSearch();
     this.onAddFavorite();
     this.displayFavorites();
   }
 
-  onAdd() {
+  onSearch() {
     const searchButton = this.root.querySelector(".search-btn");
     searchButton.onclick = (e) => {
       e.preventDefault();

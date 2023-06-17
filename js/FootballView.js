@@ -5,6 +5,7 @@ export class FootballView extends Teams {
     super(root);
     this.onSearch();
     this.onAddFavorite();
+    this.onFilter();
     this.displayFavorites();
   }
 
@@ -16,6 +17,7 @@ export class FootballView extends Teams {
       this.lastTeamSearched = formInput.value;
       this.addTeam(formInput.value);
       formInput.value = "";
+      this.selectFilter(0);
     };
   }
 
@@ -31,8 +33,25 @@ export class FootballView extends Teams {
     };
   }
 
+  onFilter() {
+    const filtersBtn = this.root.querySelectorAll(".filter button");
+    filtersBtn.forEach((btn) => {
+      btn.onclick = (e) => {
+        const dataFilter = btn.getAttribute("data-filter");
+        this.selectFilter(Number(dataFilter));
+        const teamsFiltered = this.filterTeams(
+          dataFilter,
+          this.lastTeamSearched
+        );
+        this.removeAllRounds();
+        this.displayTeams(teamsFiltered);
+      };
+    });
+  }
+
   displayTeams(fixtures) {
     this.root.querySelector(".fixtures-title").classList.remove("hidden");
+    this.root.querySelector(".filter").classList.remove("hidden");
     fixtures.forEach((fixture) => {
       this.fixtureContainer.appendChild(this.createRound(fixture));
     });
@@ -44,7 +63,9 @@ export class FootballView extends Teams {
       const li = this.createFavorites(favorite);
       li.setAttribute("data-name", favorite.name);
       li.onclick = (e) => {
+        this.selectFilter(0);
         const teamName = e.target.closest("li").getAttribute("data-name");
+        console.log(teamName);
         this.lastTeamSearched = teamName;
         this.removeAllRounds();
         const { fixtures } = this.getTeamFromLocalstorage(teamName);
@@ -52,6 +73,14 @@ export class FootballView extends Teams {
       };
       this.root.querySelector(".favorite-list ul").appendChild(li);
     });
+  }
+
+  selectFilter(selectNumber) {
+    const filtersBtn = this.root.querySelectorAll(".filter button");
+    filtersBtn.forEach((btn) => {
+      btn.classList.remove("filter-selected");
+    });
+    filtersBtn[selectNumber].classList.add("filter-selected");
   }
 
   removeAllFavorites() {

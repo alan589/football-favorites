@@ -21,7 +21,6 @@ export class Teams {
           const { logo, id, name, country, code } = team;
           
           this.footballApi.searchTeamFixtures(id).then((fixtures) => {
-            console.log(fixtures);
             this.removeAllRounds()
             this.displayTeams(fixtures)
             this.teams = [...this.teams, { logo, id, name, country, code, fixtures }];
@@ -33,6 +32,25 @@ export class Teams {
           alert('Time não encontrado')
           this.removeAllRounds()
         });
+    }
+  }
+
+  filterTeams(num, teamName){
+
+    const {fixtures} = this.getTeamFromLocalstorage(teamName)
+
+    if(num === '0'){
+      return fixtures
+    }
+    if(num === '1') {
+      return fixtures.filter((round) => {
+        return round.fixture.status.short === 'NS' || round.fixture.status.short === 'TBD'
+      });
+    }
+    if(num === '2'){
+      return fixtures.filter((round) => {
+        return round.fixture.status.short === 'FT'
+      });
     }
   }
 

@@ -1,5 +1,3 @@
-import { getWeekDates } from "./utils.js";
-
 export class FootballApi {
   constructor() {
     const headers = {

@@ -28,7 +28,6 @@ export class FootballView extends Teams {
 
       favoriteBtn.classList.toggle("favorited");
       this.displayFavorites();
-      console.log(this.lastTeamSearched);
     };
   }
 
@@ -40,11 +39,18 @@ export class FootballView extends Teams {
   }
 
   displayFavorites() {
-    this.removeAllFavorites()
+    this.removeAllFavorites();
     this.favorites.forEach((favorite) => {
-      this.root
-        .querySelector(".favorite-list ul")
-        .appendChild(this.createFavorites(favorite));
+      const li = this.createFavorites(favorite);
+      li.setAttribute("data-name", favorite.name);
+      li.onclick = (e) => {
+        const teamName = e.target.closest("li").getAttribute("data-name");
+        this.lastTeamSearched = teamName;
+        this.removeAllRounds();
+        const { fixtures } = this.getTeamFromLocalstorage(teamName);
+        this.displayTeams(fixtures);
+      };
+      this.root.querySelector(".favorite-list ul").appendChild(li);
     });
   }
 
@@ -124,10 +130,7 @@ export class FootballView extends Teams {
   removeAllRounds() {
     this.root.querySelector(".fixtures-title").classList.add("hidden");
     const favoriteBtn = this.root.querySelector(".fixtures-title svg");
-    console.log("this.lastTeamSearched", this.lastTeamSearched);
     const favorite = this.getFavoriteFromLocalstorage(this.lastTeamSearched);
-
-    console.log(favorite);
 
     if (favorite) favoriteBtn.classList.add("favorited");
     else favoriteBtn.classList.remove("favorited");

@@ -11,7 +11,6 @@ export class Teams {
 
   addTeam(teamName) {
     const team = this.getTeamFromLocalstorage(teamName);
-    console.log(team);
     if (team) {
       this.removeAllRounds()
       this.displayTeams(team.fixtures)
@@ -51,7 +50,6 @@ export class Teams {
   }
 
   getFavoriteFromLocalstorage(favoriteName) {
-    console.log(this.favorites);
     return this.favorites.find((favorite) => favorite.name.toLowerCase() === favoriteName.toLowerCase());
   }
 
@@ -66,7 +64,6 @@ export class Teams {
     const array = this.favorites.filter(favorite => favorite.id !== id);  
     this.favorites = [...array]
     this.saveFavorites()
-    console.log('novo favoritos:', this.favorites);
   }
 
   saveFavorites(){

@@ -6,90 +6,99 @@ export class Teams {
     this.fixtureContainer = this.root.querySelector("#fixtures-container");
     this.footballApi = new FootballApi();
     this.loadTeams();
-    this.loadFavorites()
+    this.loadFavorites();
   }
 
   addTeam(teamName) {
-    const team = this.getTeamFromLocalstorage(teamName);
+    const team = this.getTeam(teamName);
     if (team) {
-      this.removeAllRounds()
-      this.displayTeams(team.fixtures)
+      this.removeAllRounds();
+      this.displayTeams(team.fixtures);
     } else {
       this.footballApi
         .searchTeam(teamName)
         .then((team) => {
           const { logo, id, name, country, code } = team;
-          
+
           this.footballApi.searchTeamFixtures(id).then((fixtures) => {
-            this.removeAllRounds()
-            this.displayTeams(fixtures)
-            this.teams = [...this.teams, { logo, id, name, country, code, fixtures }];
-            this.saveTeams()
+            this.removeAllRounds();
+            this.displayTeams(fixtures);
+            this.teams = [
+              ...this.teams,
+              { logo, id, name, country, code, fixtures },
+            ];
+            this.saveTeams();
           });
         })
         .catch((error) => {
-          console.error("error", error)
-          alert('Time não encontrado')
-          this.removeAllRounds()
+          console.error("error", error);
+          alert("Time não encontrado");
+          this.removeAllRounds();
         });
     }
   }
 
-  filterTeams(num, teamName){
+  filterTeams(num, teamName) {
+    const { fixtures } = this.getTeam(teamName);
 
-    const {fixtures} = this.getTeamFromLocalstorage(teamName)
-
-    if(num === '0'){
-      return fixtures
+    if (num === "0") {
+      return fixtures;
     }
-    if(num === '1') {
+    if (num === "1") {
       return fixtures.filter((round) => {
-        return round.fixture.status.short === 'NS' || round.fixture.status.short === 'TBD'
+        return (
+          round.fixture.status.short === "NS" ||
+          round.fixture.status.short === "TBD"
+        );
       });
     }
-    if(num === '2'){
+    if (num === "2") {
       return fixtures.filter((round) => {
-        return round.fixture.status.short === 'FT'
+        return round.fixture.status.short === "FT";
       });
     }
   }
 
   loadTeams() {
     this.teams = JSON.parse(localStorage.getItem("@teams:")) || [];
-    console.log('teams:', this.teams);
+    console.log("teams:", this.teams);
   }
 
   saveTeams() {
     localStorage.setItem("@teams:", JSON.stringify(this.teams));
   }
 
-  getTeamFromLocalstorage(teamName) {
-    return this.teams.find((team) => team.name.toLowerCase() === teamName.toLowerCase());
+  getTeam(teamName) {
+    return this.teams.find(
+      (team) => team.name.toLowerCase() === teamName.toLowerCase()
+    );
   }
 
-  getFavoriteFromLocalstorage(favoriteName) {
-    return this.favorites.find((favorite) => favorite.name.toLowerCase() === favoriteName.toLowerCase());
+  getFavorite(favoriteName) {
+    return this.favorites.find(
+      (favorite) => favorite.name.toLowerCase() === favoriteName.toLowerCase()
+    );
   }
 
-  addFavorite(teamName){
-    const {code, logo, id, name} = this.getTeamFromLocalstorage(teamName)
-    this.favorites = [...this.favorites, {code, logo, id, name}]
-    this.saveFavorites()
+  addFavorite(teamName) {
+    const { code, logo, id, name } = this.getTeam(teamName);
+    this.favorites = [...this.favorites, { code, logo, id, name }];
+    this.saveFavorites();
   }
 
   removeFavorite(name) {
-    const {id} = this.getTeamFromLocalstorage(name)
-    const array = this.favorites.filter(favorite => favorite.id !== id);  
-    this.favorites = [...array]
-    this.saveFavorites()
+    const { id } = this.getTeam(name);
+    const array = this.favorites.filter((favorite) => favorite.id !== id);
+    this.favorites = [...array];
+    this.saveFavorites();
   }
 
-  saveFavorites(){
+  saveFavorites() {
     localStorage.setItem("@favorites:", JSON.stringify(this.favorites));
   }
 
   loadFavorites() {
     this.favorites = JSON.parse(localStorage.getItem("@favorites:")) || [];
-    console.log('favorites:', this.favorites);
+    console.log("favorites:", this.favorites);
   }
 }

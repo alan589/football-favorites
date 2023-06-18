@@ -68,7 +68,7 @@ export class FootballView extends Teams {
         console.log(teamName);
         this.lastTeamSearched = teamName;
         this.removeAllRounds();
-        const { fixtures } = this.getTeamFromLocalstorage(teamName);
+        const { fixtures } = this.getTeam(teamName);
         this.displayTeams(fixtures);
       };
       this.root.querySelector(".favorite-list ul").appendChild(li);
@@ -159,7 +159,7 @@ export class FootballView extends Teams {
   removeAllRounds() {
     this.root.querySelector(".fixtures-title").classList.add("hidden");
     const favoriteBtn = this.root.querySelector(".fixtures-title svg");
-    const favorite = this.getFavoriteFromLocalstorage(this.lastTeamSearched);
+    const favorite = this.getFavorite(this.lastTeamSearched);
 
     if (favorite) favoriteBtn.classList.add("favorited");
     else favoriteBtn.classList.remove("favorited");

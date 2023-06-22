@@ -115,7 +115,7 @@ export class FootballView extends Teams {
 
     const roundDateArray = new Intl.DateTimeFormat("pt-BR", options)
       .format(new Date(fixture.date))
-      .split(",");
+      .split(" ");
 
     const html = `
         <div class="round">
@@ -137,9 +137,9 @@ export class FootballView extends Teams {
             alt="${teams.home.name} logo"
             />
             <div class="scoreboard">
-            <span>${goals.home === null ? "&nbsp;" : goals.home}</span>
+            <span>${goals.home ?? "&nbsp;&nbsp;"}</span>
             <span>X</span>
-            <span>${goals.away === null ? "&nbsp;" : goals.away}</span>
+            <span>${goals.away ?? "&nbsp;&nbsp;"}</span>
             </div>
             <img
             src=${teams.away.logo}
